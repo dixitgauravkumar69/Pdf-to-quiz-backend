@@ -2,18 +2,17 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const quizRoutes = require('./routes/quiz');
-require('dotenv').config(); // Load environment variables from .env
+require('dotenv').config(); // Load environment variables
 
 const app = express();
 app.use(express.json());
 
-// Use CORS with deployment-safe options (adjust if needed)
+// Allow frontend on localhost or Vercel
 app.use(cors({
-    origin: ['http://localhost:3000', 'https://your-frontend-domain.com'], // Update this
+    origin: ['http://localhost:3000', 'https://vercel.com/gaurav-kumar-dixits-projects/quiz-frontend/EjQjXHtgfyYrjUiucXYuemgHeBYs'], // Replace with your actual Vercel domain
     credentials: true
 }));
 
-// MongoDB connection (uses environment variable or fallback to local)
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/quizdb';
 
 mongoose.connect(MONGO_URI, {
@@ -26,11 +25,9 @@ mongoose.connect(MONGO_URI, {
 // API routes
 app.use('/api/quiz', quizRoutes);
 
-
 app.get('/', (req, res) => {
     res.send('Welcome to the Quiz API!');
 });
 
-// Port for deployment or local
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
