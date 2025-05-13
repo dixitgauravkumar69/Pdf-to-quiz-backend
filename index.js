@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+require('dotenv').config();
 const quizRoutes = require('./routes/quiz');
 
 
@@ -15,7 +16,7 @@ app.use(express.json());
 
  
 
-mongoose.connect('mongodb://localhost:27017/quizdb')
+mongoose.connect(process.env.MONGODB_URL)
 .then(() => console.log('✅ MongoDB connected'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
@@ -26,5 +27,6 @@ app.get('/', (req, res) => {
     res.send('Welcome to the Quiz API!');
 });
 
-const PORT =  5000;
+const PORT =  process.env.PORT || 5000;
+// Start the server
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
